@@ -16,16 +16,13 @@
 
 package com.example.android.bluetoothchat
 
-import android.app.ActionBar
 import android.app.Activity
 import android.bluetooth.BluetoothAdapter
-import android.bluetooth.BluetoothDevice
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.Menu
@@ -175,7 +172,7 @@ class BluetoothChatFragment : Fragment() {
         // onResume() will be called when ACTION_REQUEST_ENABLE activity returns.
         if (mChatService != null) {
             // Only if the state is STATE_NONE, do we know that we haven't started already
-            if (mChatService!!.state == BluetoothChatService.STATE_NONE) {
+            if (mChatService!!.connectionState == BluetoothChatService.STATE_NONE) {
                 // Start the Bluetooth chat services
                 mChatService!!.start()
             }
@@ -219,7 +216,7 @@ class BluetoothChatFragment : Fragment() {
         }
 
         // Initialize the BluetoothChatService to perform bluetooth connections
-        mChatService = BluetoothChatService(activity!!, mHandler)
+        mChatService = BluetoothChatService(mHandler)
 
         // Initialize the buffer for outgoing messages
         mOutStringBuffer = StringBuffer("")
@@ -243,7 +240,7 @@ class BluetoothChatFragment : Fragment() {
      */
     private fun sendMessage(message: String) {
         // Check that we're actually connected before trying anything
-        if (mChatService!!.state != BluetoothChatService.STATE_CONNECTED) {
+        if (mChatService!!.connectionState != BluetoothChatService.STATE_CONNECTED) {
             Toast.makeText(activity, R.string.not_connected, Toast.LENGTH_SHORT).show()
             return
         }

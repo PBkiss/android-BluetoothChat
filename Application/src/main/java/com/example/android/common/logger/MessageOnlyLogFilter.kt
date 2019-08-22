@@ -13,48 +13,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.android.common.logger;
+package com.example.android.common.logger
 
 /**
- * Simple {@link LogNode} filter, removes everything except the message.
+ * Simple [LogNode] filter, removes everything except the message.
  * Useful for situations like on-screen log output where you don't want a lot of metadata displayed,
  * just easy-to-read message updates as they're happening.
  */
-public class MessageOnlyLogFilter implements LogNode {
+class MessageOnlyLogFilter : LogNode {
 
-    LogNode mNext;
+    /**
+     * Returns the next LogNode in the chain.
+     */
+    /**
+     * Sets the LogNode data will be sent to..
+     */
+    var next: LogNode? = null
 
     /**
      * Takes the "next" LogNode as a parameter, to simplify chaining.
      *
      * @param next The next LogNode in the pipeline.
      */
-    public MessageOnlyLogFilter(LogNode next) {
-        mNext = next;
+    constructor(next: LogNode) {
+        this.next = next
     }
 
-    public MessageOnlyLogFilter() {
-    }
+    constructor() {}
 
-    @Override
-    public void println(int priority, String tag, String msg, Throwable tr) {
-        if (mNext != null) {
-            getNext().println(Log.NONE, null, msg, null);
+    override fun println(priority: Int, tag: String?, msg: String?, tr: Throwable?) {
+        if (next != null) {
+            next!!.println(Log.NONE, null, msg, null)
         }
-    }
-
-    /**
-     * Returns the next LogNode in the chain.
-     */
-    public LogNode getNext() {
-        return mNext;
-    }
-
-    /**
-     * Sets the LogNode data will be sent to..
-     */
-    public void setNext(LogNode node) {
-        mNext = node;
     }
 
 }

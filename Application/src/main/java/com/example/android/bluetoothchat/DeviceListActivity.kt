@@ -55,7 +55,7 @@ class DeviceListActivity : Activity() {
     /**
      * The on-click listener for all devices in the ListViews
      */
-    private val mDeviceClickListener = AdapterView.OnItemClickListener { av, v, arg2, arg3 ->
+    private val mDeviceClickListener = AdapterView.OnItemClickListener { _, v, _, _ ->
         // Cancel discovery because it's costly and we're about to connect
         mBtAdapter!!.cancelDiscovery()
 
@@ -90,7 +90,6 @@ class DeviceListActivity : Activity() {
                 }
                 // When discovery is finished, change the Activity title
             } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED == action) {
-                setProgressBarIndeterminateVisibility(false)
                 setTitle(R.string.select_device)
                 if (mNewDevicesArrayAdapter!!.count == 0) {
                     val noDevices = resources.getText(R.string.none_found).toString()
@@ -104,11 +103,10 @@ class DeviceListActivity : Activity() {
         super.onCreate(savedInstanceState)
 
         // Setup the window
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS)
         setContentView(R.layout.activity_device_list)
 
         // Set result CANCELED in case the user backs out
-        setResult(Activity.RESULT_CANCELED)
+        setResult(RESULT_CANCELED)
 
         // Initialize the button to perform device discovery
         val scanButton = findViewById<View>(R.id.button_scan) as Button
@@ -177,7 +175,6 @@ class DeviceListActivity : Activity() {
         Log.d(TAG, "doDiscovery()")
 
         // Indicate scanning in the title
-        setProgressBarIndeterminateVisibility(true)
         setTitle(R.string.scanning)
 
         // Turn on sub-title for new devices

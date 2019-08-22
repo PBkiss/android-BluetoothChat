@@ -20,10 +20,8 @@ import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothServerSocket
 import android.bluetooth.BluetoothSocket
-import android.content.Context
 import android.os.Bundle
 import android.os.Handler
-import android.os.Message
 
 import com.example.android.common.logger.Log
 
@@ -38,14 +36,14 @@ import java.util.UUID
  * incoming connections, a thread for connecting with a device, and a
  * thread for performing data transmissions when connected.
  */
-class BluetoothChatService
+
 /**
  * Constructor. Prepares a new BluetoothChat session.
  *
  * @param context The UI Activity Context
  * @param handler A Handler to send messages back to the UI Activity
  */
-(context: Context, private val mHandler: Handler) {
+class BluetoothChatService(private val mHandler: Handler) {
 
     // Member fields
     private val mAdapter: BluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
@@ -312,7 +310,7 @@ class BluetoothChatService
                     "BEGIN mAcceptThread" + this)
             name = "AcceptThread$mSocketType"
 
-            var socket: BluetoothSocket? = null
+            var socket: BluetoothSocket?
 
             // Listen to the server socket if we're not connected
             while (connectionState != STATE_CONNECTED) {
